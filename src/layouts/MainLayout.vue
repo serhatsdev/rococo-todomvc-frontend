@@ -21,7 +21,7 @@
           <q-menu fir anchor="bottom right" self="top right">
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup>
-                <q-item-section @click="authStore.logout()">Logout</q-item-section>
+                <q-item-section @click="authService.logout()">Logout</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -47,6 +47,7 @@
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useAuthStore } from 'stores/auth'
+import { authService } from '@/services/auth.service'
 
 const authStore = useAuthStore()
 
