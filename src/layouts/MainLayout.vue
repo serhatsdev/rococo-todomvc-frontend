@@ -56,6 +56,11 @@ const linksList = [
     icon: 'code',
     link: '/dashboard',
   },
+  {
+    title: 'Settings',
+    icon: 'settings',
+    link: '/settings',
+  },
 ]
 
 const leftDrawerOpen = ref(false)
