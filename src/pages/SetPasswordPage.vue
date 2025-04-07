@@ -38,17 +38,21 @@
     </q-card>
   </q-page>
 </template>
-  
+
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useAuthStore } from 'stores/auth'
+import { authService } from '@/services/auth.service'
 
 const route = useRoute()
-const authStore = useAuthStore()
 
 const token = route.params.token
 const uidb64 = route.params.uidb64
+
+console.log('token', token)
+console.log('uidb64', uidb64);
+
+
 
 const password = ref('')
 const passwordConfirm = ref('')
@@ -60,14 +64,9 @@ const passwordRules = [
 
 const confirmPasswordRules = [(v) => v === password.value || 'Passwords do not match.']
 
-onMounted(() => {
-  console.log('mounted')
-})
-// Placeholder login function
 async function onSubmit() {
-  await authStore.setPassword(token, uidb64, {
+  await authService.setPassword(token, uidb64, {
     password: password.value,
   })
 }
 </script>
-  

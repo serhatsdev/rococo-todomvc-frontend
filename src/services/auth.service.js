@@ -26,8 +26,13 @@ export const authService = {
   async resetPassword(payload) {
     return await this.sendRequest('post', '/auth/forgot_password', payload)
   },
-  async setPassword(payload) {
-    return await this.sendRequest('post', `/auth/set_password/${payload.token}/${payload.uidb64}`, payload)
+  async setPassword(token, uidb64, payload) {
+    const authStore = useAuthStore()
+    const url = `/auth/reset_password/${token}/${uidb64}`
+    const responseData = await this.sendRequest('post', url, payload);
+    if (responseData?.success) {
+      authStore.router.push('/login')
+    }
   },
   async getUserProfile() {
     return await this.sendRequest('get', '/person/me')
