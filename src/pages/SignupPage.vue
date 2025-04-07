@@ -35,8 +35,28 @@
             type="email"
             label="E-mail address"
             outlined
-            class="q-mb-xl"
+            class="q-mb-lg"
           />
+
+          <!-- Password -->
+          <q-input
+            v-model="password"
+            type="password"
+            label="Password"
+            aria-autocomplete="current-password"
+            outlined
+            class="q-mb-lg"
+          />
+          <!-- Confirm Password -->
+          <q-input
+            v-model="confirmPassword"
+            type="password"
+            label="Confirm Password"
+            aria-autocomplete="current-password"
+            outlined
+            class="q-mb-lg"
+          />
+
 
           <!-- Signup Button -->
           <q-btn
@@ -57,7 +77,7 @@
     </q-card>
   </q-page>
 </template>
-    
+
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -66,6 +86,8 @@ import { useAuthStore } from 'stores/auth'
 const firstName = ref('')
 const lastName = ref('')
 const emailAddress = ref('')
+const password = ref('')
+const confirmPassword = ref('')
 
 const successDialog = ref(false)
 const signupLoading = ref(false)
@@ -82,6 +104,8 @@ async function onSubmit() {
     first_name: firstName.value,
     last_name: lastName.value,
     email_address: emailAddress.value,
+    password: password.value,
+    confirm_password: confirmPassword.value,
   })
 
   signupLoading.value = false
@@ -95,4 +119,3 @@ function backToLogin() {
   router.push('/login')
 }
 </script>
-    
