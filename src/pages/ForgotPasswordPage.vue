@@ -30,17 +30,15 @@
     </q-card>
   </q-page>
 </template>
-  
+
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
+const authStore = useAuthStore()
 const email = ref('')
-const password = ref('')
 
-// Placeholder login function
-function onSubmit() {
-  // Implement actual login logic here
-  console.log('Logging in with:', email.value, password.value)
+async function onSubmit() {
+  await authStore.resetPassword({ email: email.value })
 }
 </script>
-  

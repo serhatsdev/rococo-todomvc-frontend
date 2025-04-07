@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
     async signup(payload) {
       let response
       try {
-        response = await axios.post('/auth/signup', payload);        
+        response = await axios.post('/auth/signup', payload);
       } catch {
         Notify.create({
           message: "An unknown error occurred",
@@ -52,6 +52,25 @@ export const useAuthStore = defineStore('auth', {
       return handleAuthRequest(this, () =>
         axios.post('/auth/login', payload), this.router
       );
+    },
+
+    async resetPassword(payload) {
+      let response
+      try {
+        response = await axios.post('/auth/forgot_password', payload);
+      } catch {
+        Notify.create({
+          message: "An unknown error occurred",
+          color: "danger"
+        })
+        return false;
+      }
+
+      Notify.create({
+        message: response.data?.message,
+        color: response.data?.success ? "success" : "danger"
+      })
+      return response.data?.success;
     },
 
     async setPassword(token, uidb64, payload) {
