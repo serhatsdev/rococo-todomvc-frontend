@@ -38,19 +38,19 @@
     </q-card>
   </q-page>
 </template>
-  
+
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { authService } from '@/services/auth.service'
 
-const authStore = useAuthStore()
 const email = ref('')
 const password = ref('')
 
 // Placeholder login function
 async function onSubmit() {
-  // Implement actual login logic here
-  await authStore.login({ email: email.value, password: password.value })
+  await authService.login({
+    email: email.value,
+    password: password.value
+  })
 }
 </script>
-  

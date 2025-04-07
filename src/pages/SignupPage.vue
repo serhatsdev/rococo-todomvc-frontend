@@ -81,7 +81,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from 'stores/auth'
+import { authService } from '@/services/auth.service'
 
 const firstName = ref('')
 const lastName = ref('')
@@ -94,13 +94,11 @@ const signupLoading = ref(false)
 
 const router = useRouter()
 
-const authStore = useAuthStore()
-
 // Placeholder login function
 async function onSubmit() {
   signupLoading.value = true
 
-  let success = await authStore.signup({
+  let success = await authService.signup({
     first_name: firstName.value,
     last_name: lastName.value,
     email_address: emailAddress.value,

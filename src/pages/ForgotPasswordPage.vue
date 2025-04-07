@@ -33,12 +33,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { authService } from '@/services/auth.service'
 
-const authStore = useAuthStore()
 const email = ref('')
 
 async function onSubmit() {
-  await authStore.resetPassword({ email: email.value })
+  await authService.resetPassword({ email: email.value })
 }
 </script>
