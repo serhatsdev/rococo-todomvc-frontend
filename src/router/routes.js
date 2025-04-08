@@ -1,4 +1,13 @@
+import { useAuthStore } from '@/stores/auth'
+
 const routes = [
+  {
+    path: '/',
+    redirect: () => {
+      const authStore = useAuthStore()
+      return authStore.isAuthenticated ? '/dashboard' : '/login'
+    }
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
