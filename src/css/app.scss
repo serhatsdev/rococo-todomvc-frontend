@@ -1,30 +1,5 @@
 // app global css in SCSS form
 
-/* used for things that should be hidden in the ui,
-but useful for people who use screen readers */
-.visually-hidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-}
-
-.toggle-all {
-    width: 40px !important;
-    height: 60px !important;
-    right: auto !important;
-}
-
-.toggle-all-label {
-    pointer-events: none;
-}
-
 html,
 body {
 	margin: 0;
@@ -35,7 +10,7 @@ body {
     font: 14px Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
-button {
+.todoapp button {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -58,6 +33,31 @@ button {
 .todoapp {
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
 	            0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* used for things that should be hidden in the ui,
+but useful for people who use screen readers */
+.todoapp .visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+}
+
+.todoapp .toggle-all {
+    width: 40px !important;
+    height: 60px !important;
+    right: auto !important;
+}
+
+.todoapp .toggle-all-label {
+    pointer-events: none;
 }
 
 .todoapp input::-webkit-input-placeholder {
@@ -281,6 +281,7 @@ button {
 	height: 40px;
 	text-align: center;
 	font-size: 15px;
+	font-weight: 300;
 	border-top: 1px solid #e6e6e6;
 }
 
@@ -398,9 +399,9 @@ html .clear-completed:active {
 	}
 }
 
-:focus,
-.toggle:focus + label,
-.toggle-all:focus + label {
+.todoapp :focus,
+.todoapp .toggle:focus + label,
+.todoapp .toggle-all:focus + label {
 	box-shadow: 0 0 2px 2px #CF7D7D;
 	outline: 0;
 }
