@@ -49,11 +49,6 @@ const route = useRoute()
 const token = route.params.token
 const uidb64 = route.params.uidb64
 
-console.log('token', token)
-console.log('uidb64', uidb64);
-
-
-
 const password = ref('')
 const passwordConfirm = ref('')
 

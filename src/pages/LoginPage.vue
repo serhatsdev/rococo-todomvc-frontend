@@ -46,7 +46,6 @@ import { authService } from '@/services/auth.service'
 const email = ref('')
 const password = ref('')
 
-// Placeholder login function
 async function onSubmit() {
   await authService.login({
     email: email.value,

@@ -94,7 +94,6 @@ const signupLoading = ref(false)
 
 const router = useRouter()
 
-// Placeholder login function
 async function onSubmit() {
   signupLoading.value = true
 
