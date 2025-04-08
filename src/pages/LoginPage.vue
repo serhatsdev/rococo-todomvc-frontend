@@ -6,9 +6,9 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit.prevent="onSubmit" class="full-width">
+        <q-form @submit.prevent="onSubmit" class="full-width" ref="formRef">
           <!-- Email -->
-          <q-input v-model="email" type="email" label="Email" outlined class="q-mb-lg" />
+          <q-input v-model="email" type="email" label="Email" outlined class="q-mb-lg" :rules="emailRules" />
 
           <!-- Password -->
           <q-input
@@ -18,6 +18,7 @@
             aria-autocomplete="current-password"
             outlined
             class="q-mb-md"
+            :rules="passwordRules"
           />
 
           <!-- Forgot Password Link -->
@@ -43,10 +44,19 @@
 import { ref } from 'vue'
 import { authService } from '@/services/auth.service'
 
+const formRef = ref(null)
 const email = ref('')
 const password = ref('')
 
+const emailRules = [(v) => !!v || 'E-mail is required']
+
+const passwordRules = [(v) => !!v || 'Password is required']
+
 async function onSubmit() {
+  const isValid = await formRef.value.validate()
+  if (!isValid) {
+    return
+  }
   await authService.login({
     email: email.value,
     password: password.value

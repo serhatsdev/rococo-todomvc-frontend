@@ -22,12 +22,25 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit.prevent="onSubmit" class="full-width">
+        <q-form
+          @submit.prevent="onSubmit"
+          @validation="isValid = $event"
+          class="full-width"
+          ref="formRef">
           <!-- First name -->
-          <q-input v-model="firstName" type="text" label="First name" outlined class="q-mb-lg" />
+          <q-input
+            v-model="firstName"
+            type="text" label="First name"
+            outlined class="q-mb-lg"
+            :rules="firstNameRules" />
 
           <!-- Last name -->
-          <q-input v-model="lastName" type="text" label="Last name" outlined class="q-mb-lg" />
+          <q-input
+            v-model="lastName"
+            type="text"
+            label="Last name"
+            outlined class="q-mb-lg"
+            :rules="lastNameRules" />
 
           <!-- E-mail address -->
           <q-input
@@ -36,6 +49,7 @@
             label="E-mail address"
             outlined
             class="q-mb-lg"
+            :rules="emailRules"
           />
 
           <!-- Password -->
@@ -46,6 +60,7 @@
             aria-autocomplete="current-password"
             outlined
             class="q-mb-lg"
+            :rules="passwordRules"
           />
           <!-- Confirm Password -->
           <q-input
@@ -55,8 +70,8 @@
             aria-autocomplete="current-password"
             outlined
             class="q-mb-lg"
+            :rules="confirmPasswordRules"
           />
-
 
           <!-- Signup Button -->
           <q-btn
@@ -83,6 +98,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authService } from '@/services/auth.service'
 
+const formRef = ref(null)
+
 const firstName = ref('')
 const lastName = ref('')
 const emailAddress = ref('')
@@ -95,6 +112,11 @@ const signupLoading = ref(false)
 const router = useRouter()
 
 async function onSubmit() {
+  const isValid = await formRef.value.validate()
+  if (!isValid) {
+    return
+  }
+
   signupLoading.value = true
 
   let success = await authService.signup({
@@ -111,6 +133,18 @@ async function onSubmit() {
     successDialog.value = true
   }
 }
+
+const firstNameRules = [(v) => !!v || 'First name is required']
+const lastNameRules = [(v) => !!v || 'Last name is required']
+const emailRules = [
+  (v) => !!v || 'E-mail address is required',
+  (v) => /.+@.+\..+/.test(v) || 'E-mail address must be valid',
+]
+const passwordRules = [
+  (v) => !!v || 'Password is required',
+  (v) => v.length >= 8 || 'Min 8 characters',
+]
+const confirmPasswordRules = [(v) => v === password.value || 'Passwords do not match.']
 
 function backToLogin() {
   router.push('/login')

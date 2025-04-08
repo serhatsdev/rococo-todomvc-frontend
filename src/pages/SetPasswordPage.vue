@@ -9,7 +9,7 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit.prevent="onSubmit" class="full-width">
+        <q-form @submit.prevent="onSubmit" class="full-width" ref="formRef">
           <!-- Password -->
           <q-input
             v-model="password"
@@ -49,6 +49,7 @@ const route = useRoute()
 const token = route.params.token
 const uidb64 = route.params.uidb64
 
+const formRef = ref(null)
 const password = ref('')
 const passwordConfirm = ref('')
 
@@ -60,6 +61,11 @@ const passwordRules = [
 const confirmPasswordRules = [(v) => v === password.value || 'Passwords do not match.']
 
 async function onSubmit() {
+  const isValid = await formRef.value.validate()
+  if (!isValid) {
+    return
+  }
+
   await authService.setPassword(token, uidb64, {
     password: password.value,
   })

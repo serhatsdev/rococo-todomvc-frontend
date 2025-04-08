@@ -9,9 +9,9 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit.prevent="onSubmit" class="full-width">
+        <q-form @submit.prevent="onSubmit" class="full-width" ref="formRef">
           <!-- Email -->
-          <q-input v-model="email" type="email" label="Email" outlined class="q-mb-lg" />
+          <q-input v-model="email" type="email" label="Email" outlined class="q-mb-lg" :rules="emailRules" />
 
           <!-- Reset password Button -->
           <q-btn label="Reset password" color="primary" type="submit" class="full-width" />
@@ -35,9 +35,18 @@
 import { ref } from 'vue'
 import { authService } from '@/services/auth.service'
 
+const formRef = ref(null)
+const emailRules = [
+  (v) => !!v || 'E-mail is required',
+]
 const email = ref('')
 
 async function onSubmit() {
+  const isValid = await formRef.value.validate()
+  if (!isValid) {
+    return
+  }
+
   await authService.resetPassword({ email: email.value })
 }
 </script>
