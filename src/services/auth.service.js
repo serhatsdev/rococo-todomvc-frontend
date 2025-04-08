@@ -38,6 +38,12 @@ export const authService = new class AuthService extends BaseApiService {
     }
   }
 
+  async verifyEmail(token, uidb64) {
+    const url = `/auth/verify_email/${token}/${uidb64}`
+    const responseData = await this.sendRequest('post', url);
+    return responseData;
+  }
+
   async getUserProfile() {
     return await this.sendRequest('get', '/person/me')
   }
