@@ -1,6 +1,6 @@
-# Rococo Sample App (rococo-sample-vue3)
+# Rococo TodoMVC App (rococo-todomvc-frontend)
 
-A Vue3 starting point for rococo-based web apps
+A TodoMVC frontend application for a Rococo based backend
 
 ## Install the dependencies
 ```bash
