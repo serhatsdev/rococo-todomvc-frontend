@@ -12,7 +12,7 @@
           v-if="authStore.isAuthenticated"
         />
 
-        <q-toolbar-title> Rococo Sample </q-toolbar-title>
+        <q-toolbar-title> Ecor Rouge Todos </q-toolbar-title>
 
         <div v-if="authStore.isAuthenticated" class="cursor-pointer">
           Logged in as
