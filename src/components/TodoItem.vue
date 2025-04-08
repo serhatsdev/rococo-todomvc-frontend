@@ -19,7 +19,7 @@ const editModel = computed({
 
 const toggleModel = computed({
     get() {
-        return props.todo.completed;
+        return props.todo.is_completed;
     },
     set(value) {
         emit("toggle-todo", props.todo, value);
@@ -58,7 +58,7 @@ function updateTodo() {
 <template>
     <li
         :class="{
-            completed: todo.completed,
+            completed: todo.is_completed,
             editing: editing,
         }"
     >

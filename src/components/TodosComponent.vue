@@ -1,24 +1,26 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 import TodoFooter from './TodoFooter.vue';
 import TodoHeader from './TodoHeader.vue';
 import TodoItem from './TodoItem.vue';
+import { todosService } from '@/services/todos.service';
 
 const todos = ref([]);
 const route = useRoute();
+const filter = computed(() => route.query.filter || 'all');
 
 const filters = {
     all: (todos) => todos,
-    active: (todos) => todos.value.filter((todo) => !todo.completed),
-    completed: (todos) => todos.value.filter((todo) => todo.completed),
+    active: (todos) => todos.value.filter((todo) => !todo.is_completed),
+    completed: (todos) => todos.value.filter((todo) => todo.is_completed),
 };
 
 const activeTodos = computed(() => filters.active(todos));
 const completedTodos = computed(() => filters.completed(todos));
 const filteredTodos = computed(() => {
-    switch(route.name) {
+    switch(filter.value) {
         case "active":
             return activeTodos;
         case "completed":
@@ -28,52 +30,61 @@ const filteredTodos = computed(() => {
     }
 });
 
+onMounted(async () => {
+  await refreshTodos();
+});
+
 const toggleAllModel = computed({
     get() {
         return activeTodos.value.length === 0;
     },
-    set(value) {
+    async set(value) {
         todos.value.forEach((todo) => {
             todo.completed = value;
         });
+
+        value ? await todosService.completeAllTodos()
+              : await todosService.activateAllTodos();
+        await refreshTodos();
     },
 });
 
-function uuid() {
-    let uuid = "";
-    for (let i = 0; i < 32; i++) {
-        let random = (Math.random() * 16) | 0;
-
-        if (i === 8 || i === 12 || i === 16 || i === 20)
-            uuid += "-";
-
-        uuid += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(16);
-    }
-    return uuid;
+async function refreshTodos() {
+    todos.value = await todosService.getTodos();
 }
 
-function addTodo(value) {
-    todos.value.push({
-        completed: false,
-        title: value,
-        id: uuid(),
-    })
+async function addTodo(value) {
+    todos.value.push({ title: value, is_completed: false });
+
+    await todosService.createTodo({ title: value });
+    await refreshTodos();
 }
 
-function deleteTodo(todo) {
+async function deleteTodo(todo) {
     todos.value = todos.value.filter((t) => t !== todo);
+
+    await todosService.deleteTodoById(todo.entity_id);
+    await refreshTodos();
 }
 
-function toggleTodo(todo, value) {
-    todo.completed = value;
+async function toggleTodo(todo) {
+    todo.is_completed = !todo.is_completed;
+    await todosService.toggleTodoById(todo.entity_id);
+    await refreshTodos();
 };
 
-function editTodo(todo, value) {
+async function editTodo(todo, value) {
     todo.title = value;
+
+    await todosService.updateTodoById(todo.entity_id, { title: value });
+    await refreshTodos();
 }
 
-function deleteCompleted() {
-    todos.value = todos.value.filter(todo => !todo.completed);
+async function clearCompleted() {
+    todos.value = todos.value.filter((todo) => !todo.is_completed);
+
+    await todosService.clearCompletedTodos();
+    await refreshTodos();
 }
 </script>
 
@@ -83,7 +94,7 @@ function deleteCompleted() {
     <TodoHeader @add-todo="addTodo" />
     <main class="main" v-show="todos.length > 0">
         <div class="toggle-all-container">
-            <input type="checkbox" id="toggle-all-input" class="toggle-all" v-model="toggleAllModel" :disabled="filteredTodos.value.length === 0"/>
+            <input type="checkbox" id="toggle-all-input" class="toggle-all" v-model="toggleAllModel" :disabled="todos.length === 0"/>
             <label class="toggle-all-label" htmlFor="toggle-all-input"> Toggle All Input </label>
         </div>
         <ul class="todo-list">
@@ -91,7 +102,7 @@ function deleteCompleted() {
                 @delete-todo="deleteTodo" @edit-todo="editTodo" @toggle-todo="toggleTodo" />
         </ul>
     </main>
-    <TodoFooter :todos="todos" @delete-completed="deleteCompleted" />
+    <TodoFooter :todos="todos" @delete-completed="clearCompleted" />
   </section>
 </template>
 
