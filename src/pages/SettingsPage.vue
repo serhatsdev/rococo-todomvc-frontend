@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex flex-center column q-pa-md">
-    <div class="text-h4 q-mb-lg">Settings</div>
+  <q-page class="flex column items-center ">
+    <PageHeader text="settings" />
 
     <q-card class="settings-card" style="min-width: 400px">
       <q-card-section>
@@ -36,6 +36,7 @@
 import { ref, onMounted } from 'vue'
 import { authService } from '@/services/auth.service'
 import { useAuthStore } from '@/stores/auth'
+import PageHeader from 'src/components/PageHeader.vue'
 
 const authStore = useAuthStore()
 
