@@ -15,7 +15,8 @@ const routes = [
       { path: 'login', component: () => import('pages/LoginPage.vue'), meta: { requiresAuth: false } },
       { path: 'signup', component: () => import('pages/SignupPage.vue'), meta: { requiresAuth: false } },
       { path: 'forgot-password', component: () => import('pages/ForgotPasswordPage.vue'), meta: { requiresAuth: false } },
-      { path: '/set-password/:token/:uidb64', component: () => import('pages/SetPasswordPage.vue'), meta: { requiresAuth: false } }
+      { path: '/set-password/:token/:uidb64', component: () => import('pages/SetPasswordPage.vue'), meta: { requiresAuth: false } },
+      { path: '/verify-email/:token/:uidb64', component: () => import('pages/VerifyEmailPage.vue'), meta: { requiresAuth: false } },
     ]
   },
 
